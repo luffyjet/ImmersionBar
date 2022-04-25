@@ -714,14 +714,22 @@ public final class ImmersionBar implements ImmersionCallback {
             setPadding(0, 0, 0, 0);
             return;
         }
-        int top = 0;
-        if (mBarParams.fits && mFitsStatusBarType == FLAG_FITS_SYSTEM_WINDOWS) {
-            top = mBarConfig.getStatusBarHeight();
-        }
-        if (mBarParams.isSupportActionBar) {
-            top = mBarConfig.getStatusBarHeight() + mActionBarHeight;
-        }
-        setPadding(0, top, 0, 0);
+
+        mDecorView.post(() -> {
+            int top = 0;
+            int notchHeight = getNotchHeight(getActivity());
+            int statusBarHeight = mBarConfig.getStatusBarHeight();
+
+            if (mBarParams.fits && mFitsStatusBarType == FLAG_FITS_SYSTEM_WINDOWS) {
+                top = Math.max(notchHeight, statusBarHeight);
+            }
+
+            if (mBarParams.isSupportActionBar) {
+                top = notchHeight > statusBarHeight ? notchHeight + mActionBarHeight : statusBarHeight + mActionBarHeight;
+            }
+
+            setPadding(0, top, 0, 0);
+        });
     }
 
     /**

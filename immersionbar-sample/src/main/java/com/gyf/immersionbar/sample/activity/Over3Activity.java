@@ -1,12 +1,15 @@
 package com.gyf.immersionbar.sample.activity;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.gyf.immersionbar.BarParams;
+import com.gyf.immersionbar.BarProperties;
 import com.gyf.immersionbar.ImmersionBar;
+import com.gyf.immersionbar.OnBarListener;
 import com.gyf.immersionbar.sample.R;
 
 import butterknife.BindView;
@@ -17,7 +20,7 @@ import butterknife.OnClick;
  * @date 2017/5/8
  */
 public class Over3Activity extends BaseActivity {
-
+    private static final String TAG = "Over3Activity";
     @BindView(R.id.text)
     TextView textView;
     @BindView(R.id.btn)
@@ -30,11 +33,17 @@ public class Over3Activity extends BaseActivity {
 
     @Override
     protected void initImmersionBar() {
-        super.initImmersionBar();
+//        super.initImmersionBar();
         ImmersionBar.with(this).fitsSystemWindows(true)
                 .statusBarColor(R.color.colorPrimary)
                 .navigationBarColor(R.color.colorPrimary)
                 .keyboardEnable(true)
+                .setOnBarListener(new OnBarListener() {
+                    @Override
+                    public void onBarChange(BarProperties barProperties) {
+                        Log.i(TAG, "onBarChange: bar="+barProperties.getStatusBarHeight() + " , not="+ barProperties.getNotchHeight());
+                    }
+                })
                 .init();
     }
 
