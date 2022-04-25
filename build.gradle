@@ -4,13 +4,14 @@ import java.util.function.Consumer
 
 buildscript {
     ext.kotlin_version = '1.4.32'
-    ext.immersionbar_version = '3.2.2'
+    ext.immersionbar_version = '3.2.3'
     repositories {
         maven { url 'https://maven.aliyun.com/repository/central' }
         maven { url 'https://maven.aliyun.com/repository/public' }
         mavenCentral()
         google()
         jcenter()
+        maven { url "https://jitpack.io" }
     }
     dependencies {
 
@@ -45,21 +46,21 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-subprojects.forEach(new Consumer<Project>() {
-    @Override
-    void accept(Project project) {
-        ["com.android.library"].forEach(new Consumer<String>() {
-            @Override
-            void accept(String s) {
-                project.getPlugins().withId(s) {
-                    project.afterEvaluate {
-                        def file = new File(project.getProjectDir().parent, "gradle/publish-mavencentral.gradle")
-                        if (file.exists()) {
-                            project.apply from: file
-                        }
-                    }
-                }
-            }
-        })
-    }
-})
+//subprojects.forEach(new Consumer<Project>() {
+//    @Override
+//    void accept(Project project) {
+//        ["com.android.library"].forEach(new Consumer<String>() {
+//            @Override
+//            void accept(String s) {
+//                project.getPlugins().withId(s) {
+//                    project.afterEvaluate {
+//                        def file = new File(project.getProjectDir().parent, "gradle/publish-mavencentral.gradle")
+//                        if (file.exists()) {
+//                            project.apply from: file
+//                        }
+//                    }
+//                }
+//            }
+//        })
+//    }
+//})
